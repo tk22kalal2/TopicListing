@@ -1,20 +1,21 @@
 .custom-form {
     margin: 0;
     text-align: center;
-    position: relative;
-    overflow-x: hidden; /* Prevents horizontal overflow */
+    position: relative; /* Enables absolute positioning for child elements */
+    overflow-x: hidden;
 }
 
 .input-group {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%; /* Ensures it spans full container */
+    width: 100%;
 }
 
 .input-group-text {
     padding: 10px;
     border: 1px solid #ccc;
+    border-right: none;
     border-radius: 5px 0 0 5px;
     background-color: #f8f8f8;
     font-size: 18px;
@@ -28,8 +29,10 @@
     width: 600px;
     font-size: 18px;
     height: 50px;
-    box-sizing: border-box; /* Ensures padding doesn't affect layout */
-    outline: none; /* Removes the inner square/outline on focus */
+    box-sizing: border-box;
+    outline: none;
+    position: relative;
+    z-index: 1; /* Keep it above the suggestion list */
 }
 
 #searchInput:focus {
@@ -37,19 +40,20 @@
     box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
 }
 
+/* Suggestion List */
 #suggestionList {
     list-style: none;
-    position: absolute;
-    left: 50%; /* Center the list */
-    transform: translateX(-50%);
-    margin-top: 2px;
+    position: absolute; /* Position it absolutely under the input */
+    top: 100%; /* Align it right below the input field */
+    left: 0;
+    width: 600px;
+    margin: 0;
+    padding: 0;
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1;
     max-height: 300px;
-    overflow-y: auto; /* Enables vertical scrolling */
-    width: 600px;
-    white-space: nowrap;
+    overflow-y: auto; /* Enable vertical scrolling */
+    z-index: 100; /* Ensure it appears above other elements */
 }
 
 #suggestionList li {
@@ -58,6 +62,7 @@
     font-size: 16px;
     border-bottom: 1px solid #f0f0f0;
     text-overflow: ellipsis;
+    white-space: nowrap; /* Prevent line breaks */
     overflow: hidden;
 }
 
@@ -87,7 +92,7 @@
 
 @media only screen and (max-width: 767px) {
     #searchInput {
-        width: 90%; /* Adjust input width for small screens */
+        width: 90%; /* Adjust input width for smaller screens */
         margin: 10px auto;
     }
 
