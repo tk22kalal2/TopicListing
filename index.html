@@ -98,8 +98,8 @@
                                         
                                     </span>
 
-                                    <input name="keyword" type="search" class="form-control" id="keyword" placeholder="lecture name ..." aria-label="Search">
-
+                                    <input name="keyword" type="search" class="form-control" id="searchInput" placeholder="lecture name ..." oninput="getSuggestions()" />
+                                    <ul id="suggestionList"></ul>
                                     <button type="submit" class="form-control">Search</button>
                                 </div>
                             </form>
