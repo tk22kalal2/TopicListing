@@ -1,7 +1,8 @@
 .custom-form {
     margin: 0;
     text-align: center;
-    position: relative; /* Important for absolute child elements */
+    position: relative;
+    max-width: 100%;/* Important for absolute child elements */
 }
 
 .input-group {
@@ -78,12 +79,12 @@
 }
 
 @media only screen and (max-width: 767px) {
-    #searchInput {
-        width: 90%; /* Adjust for smaller screens */
-        margin: 10px auto;
+    #searchInput, #suggestionList {
+        width: 90%; /* Ensure they fit within the screen */
+        margin: 0 auto; /* Center align */
     }
-
-    #suggestionList {
-        width: 90%; /* Match input width */
+    .custom-form {
+        padding: 10px; /* Optional padding */
+        margin: 0; /* Ensure no extra margin */
     }
 }
