@@ -48,7 +48,7 @@
     padding: 0;
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    max-height: 300px;
+    max-height: 600px;
     overflow-y: auto; /* Vertical scrolling if necessary */
     width: 600px;
     z-index: 100;
