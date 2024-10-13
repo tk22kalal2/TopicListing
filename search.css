@@ -1,61 +1,73 @@
-.searchcontainer {
+.custom-form {
     margin: 0;
     text-align: center;
     position: relative;
     overflow-x: hidden; /* Prevents horizontal overflow */
 }
 
-.searchcontainer #searchInput {
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 600px;
-    margin: 40px auto 0;
-    font-size: 18px;
-    height: 50px;
-    box-sizing: border-box; /* Ensures padding doesn't break layout */
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* Ensures it spans full container */
 }
 
-.searchcontainer #searchInput:focus {
-    outline: none;
+.input-group-text {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    background-color: #f8f8f8;
+    font-size: 18px;
+    color: #6c757d;
+}
+
+#searchInput {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 0 5px 5px 0;
+    width: 600px;
+    font-size: 18px;
+    height: 50px;
+    box-sizing: border-box; /* Ensures padding doesn't affect layout */
+    outline: none; /* Removes the inner square/outline on focus */
+}
+
+#searchInput:focus {
     border-color: #1E90FF;
     box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
 }
 
-.searchcontainer #suggestionList {
+#suggestionList {
     list-style: none;
     position: absolute;
-    left: 0;
-    right: 0;
-    margin: 2px auto 0;
+    left: 50%; /* Center the list */
+    transform: translateX(-50%);
+    margin-top: 2px;
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     z-index: 1;
     max-height: 300px;
     overflow-y: auto; /* Enables vertical scrolling */
-    overflow-x: hidden;
     width: 600px;
     white-space: nowrap;
 }
 
-.searchcontainer #suggestionList li {
+#suggestionList li {
     padding: 15px 10px;
     cursor: pointer;
     font-size: 16px;
-    margin-bottom: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     border-bottom: 1px solid #f0f0f0;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
-.searchcontainer #suggestionList li a {
+#suggestionList li a {
     text-decoration: none;
     text-transform: uppercase;
     color: black;
 }
 
-.searchcontainer #suggestionList li:hover {
+#suggestionList li:hover {
     background-color: #e9f3ff;
 }
 
@@ -74,13 +86,13 @@
 }
 
 @media only screen and (max-width: 767px) {
-    .searchcontainer #searchInput {
+    #searchInput {
         width: 90%; /* Adjust input width for small screens */
         margin: 10px auto;
     }
 
-    .searchcontainer #suggestionList {
-        width: 90%; /* Adjust suggestion box width */
+    #suggestionList {
+        width: 90%; /* Adjust suggestion list width */
     }
 
     .info-icon {
