@@ -2,17 +2,18 @@
     margin: 0;
     text-align: center;
     position: relative;
-    overflow-x: auto;/* 
+    overflow-x: hidden; /* Prevents horizontal overflow */
 }
 
 .searchcontainer #searchInput {
-    padding: 8px;
+    padding: 10px 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 600px;
     margin: 40px auto 0;
     font-size: 18px;
     height: 50px;
+    box-sizing: border-box; /* Ensures padding doesn't break layout */
 }
 
 .searchcontainer #searchInput:focus {
@@ -23,42 +24,45 @@
 
 .searchcontainer #suggestionList {
     list-style: none;
-    flex: 1;
-    position: relative;
+    position: absolute;
+    left: 0;
+    right: 0;
     margin: 2px auto 0;
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     z-index: 1;
     max-height: 300px;
-    overflow-y: auto;  /* Enables vertical scrolling */
-    overflow-x: auto;
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: hidden;
     width: 600px;
-    white-space: nowrap;    
+    white-space: nowrap;
 }
 
 .searchcontainer #suggestionList li {
     padding: 15px 10px;
     cursor: pointer;
-    border-radius: 3px;
     font-size: 16px;
     margin-bottom: 0;
-    white-space: nowrap;  /* Prevents line breaks within list items */
-    overflow: hidden;  /* Hides overflow but allows scrolling */
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%;
+    border-bottom: 1px solid #f0f0f0;
 }
+
 .searchcontainer #suggestionList li a {
     text-decoration: none;
     text-transform: uppercase;
     color: black;
 }
+
 .searchcontainer #suggestionList li:hover {
-    background: #e9f3ff;
+    background-color: #e9f3ff;
 }
+
 .info-icon {
     margin-left: 10px;
     cursor: pointer;
-    color: #1E90FF; /* Example color */
+    color: #1E90FF;
     font-size: 14px;
 }
 
@@ -66,37 +70,24 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-right: 20px; /* Ensure there's space for the icon */
+    padding-right: 20px;
 }
 
 @media only screen and (max-width: 767px) {
     .searchcontainer #searchInput {
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 220px;
-        margin: 10px auto 0;
-        font-size: 18px;
-        height: 50px;
+        width: 90%; /* Adjust input width for small screens */
+        margin: 10px auto;
     }
-     .searchcontainer #suggestionList {
-        list-style: none;
-        flex: 1;
-        margin: 2px auto 0;
-        background-color: #fff;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        max-height: 300px;
-        overflow-y: auto;  /* Enables vertical scrolling */
-        overflow-x: auto;
-        width: 120px;
-        white-space: nowrap;
+
+    .searchcontainer #suggestionList {
+        width: 90%; /* Adjust suggestion box width */
     }
+
     .info-icon {
-        font-size: 12px; /* Slightly smaller icon for mobile */
+        font-size: 12px;
     }
 
     .suggestion-item {
-        flex-direction: row; /* Maintain horizontal layout */
-        padding-right: 10px; /* Reduce padding for smaller screens */
+        padding-right: 10px;
     }
+}
