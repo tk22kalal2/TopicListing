@@ -164,28 +164,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Repeat this pattern for any additional files
 ];
-  
+
+    // Fetch all HTML files and process them
     Promise.all(htmlFiles.map(fetchAndProcessFile))
         .then(allKeywordsAndUrls => {
+            // Combine keywords and URLs from all files
             const keywordsAndUrls = allKeywordsAndUrls.flat();
 
-            const searchInput = document.getElementById("keyword");
+            // Set up event listener for the search input
+            const searchInput = document.getElementById("searchInput");
             searchInput.addEventListener("input", function () {
-                const searchTerm = searchInput.value.trim().toLowerCase();
+                const searchTerm = searchInput.value.toLowerCase();
 
                 if (searchTerm === "") {
+                    // If search term is empty, hide the suggestion list
                     hideSuggestions();
-                    return;
-                }
-
-                const filteredKeywordsAndUrls = keywordsAndUrls.filter(entry =>
-                    entry.keyword.includes(searchTerm)
-                );
-
-                if (filteredKeywordsAndUrls.length > 0) {
-                    displaySuggestions(filteredKeywordsAndUrls);
                 } else {
-                    displayNoResults(); // Show "No results found" message
+                    // Filter keywords based on the search term
+                    const filteredKeywordsAndUrls = keywordsAndUrls.filter(entry => entry.keyword.includes(searchTerm));
+
+                    // Display suggestions in the suggestion list
+                    displaySuggestions(filteredKeywordsAndUrls);
                 }
             });
         })
@@ -198,20 +197,20 @@ function fetchAndProcessFile(fileInfo) {
     return fetchFileContent(file)
         .then(htmlContent => {
             const keywordsAndUrls = extractKeywordsAndUrls(htmlContent);
+
+            // Append fileName and platformName to each entry in keywordsAndUrls
             return keywordsAndUrls.map(entry => ({ ...entry, fileName, platformName }));
         })
         .catch(error => {
             console.error(`Error fetching or processing ${file}:`, error);
-            return []; // Avoid breaking Promise.all
+            return []; // Return an empty array to not disrupt Promise.all
         });
 }
 
 function fetchFileContent(file) {
+    // Fetch the content of each file using fetch API
     return fetch(file)
-        .then(response => {
-            if (!response.ok) throw new Error(`Failed to fetch ${file}`);
-            return response.text();
-        })
+        .then(response => response.text())
         .catch(error => console.error(`Error fetching ${file}:`, error));
 }
 
@@ -220,33 +219,53 @@ function extractKeywordsAndUrls(html) {
     const doc = parser.parseFromString(html, "text/html");
     const anchorElements = doc.querySelectorAll(".content-table td a");
 
-    return Array.from(anchorElements).map(anchor => {
+    // Extract keywords and corresponding URLs from the anchor elements
+    const keywordsAndUrls = Array.from(anchorElements).map(anchor => {
         const rawHref = anchor.getAttribute("data-href");
-        const url = rawHref.replace('{{botUsername}}', 'testingclonepavo_bot');
-        return { keyword: anchor.textContent.toLowerCase(), url };
+        const url = rawHref.replace('{{botUsername}}', 'testingclonepavo_bot'); // Replace botUsername
+
+        return {
+            keyword: anchor.textContent.toLowerCase(),
+            url: url
+        };
     });
+
+    return keywordsAndUrls;
 }
 
 function displaySuggestions(suggestions) {
     const suggestionList = document.getElementById("suggestionList");
+
+    // Clear existing suggestions
     suggestionList.innerHTML = "";
 
+    // Display new suggestions
     suggestions.forEach((entry, index) => {
         const listItem = document.createElement("li");
-        listItem.classList.add("list-group-item", "list-group-item-action");
 
+        // Add border to the bottom of each list item except the last one
+        if (index < suggestions.length - 1) {
+            listItem.style.borderBottom = "1px solid #ccc"; // Adjust the color and style as needed
+            listItem.style.paddingBottom = "10px"; // Optional: add padding for spacing before the line
+            listItem.style.marginBottom = "1px"; // Optional: add spacing after the line
+        }
+
+        // Create the bolded keyword element
         const keywordElement = document.createElement("span");
         keywordElement.style.fontWeight = "bold";
         keywordElement.textContent = entry.keyword;
 
+        // Create the fileName and platformName element
         const fileInfoElement = document.createElement("div");
-        fileInfoElement.style.fontSize = "0.9em";
-        fileInfoElement.style.marginLeft = "10px";
+        fileInfoElement.style.fontSize = "0.9em"; // Slightly smaller text
+        fileInfoElement.style.marginLeft = "10px"; // Indent to distinguish from keyword
         fileInfoElement.textContent = `${entry.fileName} | ${entry.platformName}`;
 
+        // Append the keyword and file info to the list item
         listItem.appendChild(keywordElement);
         listItem.appendChild(fileInfoElement);
 
+        // Add click event listener to redirect to the URL when clicked
         listItem.addEventListener("click", function () {
             window.open(entry.url, "_blank");
         });
@@ -255,11 +274,11 @@ function displaySuggestions(suggestions) {
     });
 }
 
-function displayNoResults() {
-    const suggestionList = document.getElementById("suggestionList");
-    suggestionList.innerHTML = "<li class='list-group-item'>No results found</li>";
-}
 
 function hideSuggestions() {
-    document.getElementById("suggestionList").innerHTML = "";
+    const suggestionList = document.getElementById("suggestionList");
+
+    // Clear existing suggestions
+    suggestionList.innerHTML = "";
 }
+    
