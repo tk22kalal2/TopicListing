@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fetch all HTML files and process them
     Promise.all(htmlFiles.map(fetchAndProcessFile))
         .then(allKeywordsAndUrls => {
+            // Combine keywords and URLs from all files
             const keywordsAndUrls = allKeywordsAndUrls.flat();
 
             // Set up event listener for the search input
@@ -176,11 +177,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 const searchTerm = searchInput.value.toLowerCase();
 
                 if (searchTerm === "") {
-                    hideSuggestions(); // Hide if input is empty
+                    // If search term is empty, hide the suggestion list
+                    hideSuggestions();
                 } else {
-                    const filteredKeywordsAndUrls = keywordsAndUrls.filter(entry =>
-                        entry.keyword.includes(searchTerm)
-                    );
+                    // Filter keywords based on the search term
+                    const filteredKeywordsAndUrls = keywordsAndUrls.filter(entry => entry.keyword.includes(searchTerm));
+
+                    // Display suggestions in the suggestion list
                     displaySuggestions(filteredKeywordsAndUrls);
                 }
             });
@@ -195,11 +198,8 @@ function fetchAndProcessFile(fileInfo) {
         .then(htmlContent => {
             const keywordsAndUrls = extractKeywordsAndUrls(htmlContent);
 
-            return keywordsAndUrls.map(entry => ({
-                ...entry,
-                fileName,
-                platformName
-            }));
+            // Append fileName and platformName to each entry in keywordsAndUrls
+            return keywordsAndUrls.map(entry => ({ ...entry, fileName, platformName }));
         })
         .catch(error => {
             console.error(`Error fetching or processing ${file}:`, error);
@@ -208,6 +208,7 @@ function fetchAndProcessFile(fileInfo) {
 }
 
 function fetchFileContent(file) {
+    // Fetch the content of each file using fetch API
     return fetch(file)
         .then(response => response.text())
         .catch(error => console.error(`Error fetching ${file}:`, error));
@@ -218,47 +219,53 @@ function extractKeywordsAndUrls(html) {
     const doc = parser.parseFromString(html, "text/html");
     const anchorElements = doc.querySelectorAll(".content-table td a");
 
-    return Array.from(anchorElements).map(anchor => {
+    // Extract keywords and corresponding URLs from the anchor elements
+    const keywordsAndUrls = Array.from(anchorElements).map(anchor => {
         const rawHref = anchor.getAttribute("data-href");
-        const url = rawHref.replace("{{botUsername}}", "testingclonepavo_bot");
+        const url = rawHref.replace('{{botUsername}}', 'testingclonepavo_bot'); // Replace botUsername
 
         return {
             keyword: anchor.textContent.toLowerCase(),
             url: url
         };
     });
+
+    return keywordsAndUrls;
 }
 
 function displaySuggestions(suggestions) {
     const suggestionList = document.getElementById("suggestionList");
-    suggestionList.innerHTML = ""; // Clear previous suggestions
 
+    // Clear existing suggestions
+    suggestionList.innerHTML = "";
+
+    // Display new suggestions
     suggestions.forEach((entry, index) => {
         const listItem = document.createElement("li");
-        listItem.className = "list-group-item"; // Bootstrap styling for list items
 
-        // Add border and spacing to each item except the last
+        // Add border to the bottom of each list item except the last one
         if (index < suggestions.length - 1) {
-            listItem.style.borderBottom = "1px solid #ccc";
-            listItem.style.paddingBottom = "10px";
-            listItem.style.marginBottom = "1px";
+            listItem.style.borderBottom = "1px solid #ccc"; // Adjust the color and style as needed
+            listItem.style.paddingBottom = "10px"; // Optional: add padding for spacing before the line
+            listItem.style.marginBottom = "1px"; // Optional: add spacing after the line
         }
 
-        // Create elements for keyword and additional info
+        // Create the bolded keyword element
         const keywordElement = document.createElement("span");
         keywordElement.style.fontWeight = "bold";
         keywordElement.textContent = entry.keyword;
 
+        // Create the fileName and platformName element
         const fileInfoElement = document.createElement("div");
-        fileInfoElement.style.fontSize = "0.9em";
-        fileInfoElement.style.marginLeft = "10px";
+        fileInfoElement.style.fontSize = "0.9em"; // Slightly smaller text
+        fileInfoElement.style.marginLeft = "10px"; // Indent to distinguish from keyword
         fileInfoElement.textContent = `${entry.fileName} | ${entry.platformName}`;
 
-        // Append elements to list item
+        // Append the keyword and file info to the list item
         listItem.appendChild(keywordElement);
         listItem.appendChild(fileInfoElement);
 
-        // Open URL on click
+        // Add click event listener to redirect to the URL when clicked
         listItem.addEventListener("click", function () {
             window.open(entry.url, "_blank");
         });
@@ -267,8 +274,11 @@ function displaySuggestions(suggestions) {
     });
 }
 
+
 function hideSuggestions() {
     const suggestionList = document.getElementById("suggestionList");
-    suggestionList.innerHTML = ""; // Clear suggestions
+
+    // Clear existing suggestions
+    suggestionList.innerHTML = "";
 }
     
