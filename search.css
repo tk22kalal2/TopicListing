@@ -1,6 +1,11 @@
+.searchcontainer {
+    margin: 0;
+    text-align: center;
+    position: relative;
+    overflow-x: auto;/* 
+}
 
-
-#searchInput {
+.searchcontainer #searchInput {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -10,13 +15,13 @@
     height: 50px;
 }
 
-#searchInput:focus {
+.searchcontainer #searchInput:focus {
     outline: none;
     border-color: #1E90FF;
     box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
 }
 
-#suggestionList {
+.searchcontainer #suggestionList {
     list-style: none;
     flex: 1;
     position: relative;
@@ -31,7 +36,7 @@
     white-space: nowrap;    
 }
 
-#suggestionList li {
+.searchcontainer #suggestionList li {
     padding: 15px 10px;
     cursor: pointer;
     border-radius: 3px;
@@ -42,14 +47,12 @@
     text-overflow: ellipsis;
     width: 100%;
 }
-
-#suggestionList li a {
+.searchcontainer #suggestionList li a {
     text-decoration: none;
     text-transform: uppercase;
     color: black;
 }
-
-#suggestionList li:hover {
+.searchcontainer #suggestionList li:hover {
     background: #e9f3ff;
 }
 .info-icon {
@@ -67,7 +70,7 @@
 }
 
 @media only screen and (max-width: 767px) {
-    #searchInput {
+    .searchcontainer #searchInput {
         padding: 8px;
         border: 1px solid #ccc;
         border-radius: 5px;
@@ -76,7 +79,7 @@
         font-size: 18px;
         height: 50px;
     }
-     #suggestionList {
+     .searchcontainer #suggestionList {
         list-style: none;
         flex: 1;
         margin: 2px auto 0;
